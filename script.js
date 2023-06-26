@@ -1,5 +1,12 @@
 const container = document.querySelector(".container");
 
+function clearGrid() {
+    const subContainer = document.querySelectorAll(".sub-container");
+    subContainer.forEach((subContainer) => {
+        container.removeChild(subContainer);
+    });
+}
+
 function createGrid(length=16) {
 
     //Create sub-containers, within container
@@ -10,7 +17,6 @@ function createGrid(length=16) {
     }
 
     const subContainer = document.querySelectorAll(".sub-container");
-    console.log(subContainer);
 
     //Add container items to sub-containers
     subContainer.forEach((subcontainer) => {
@@ -21,18 +27,40 @@ function createGrid(length=16) {
             subcontainer.appendChild(newDivElement);
         }
     });
+    createMouseOverEventListener();
+}
+
+//Add EventListener to div and change its background color on mouseover
+function createMouseOverEventListener() {
+
+    const allContainerItems = document.querySelectorAll(".container-item");
+
+    allContainerItems.forEach((containerItem) => {
+        containerItem.addEventListener("mouseover", () => {
+            containerItem.setAttribute("style", "background-color: grey");
+        });
+    });
 }
 
 createGrid();
 
-//Add EventListener to div and change its background color on mouseover
-const allContainerItems = document.querySelectorAll(".container-item");
+//Resize Grid depending on user input
+const resizeBtn = document.querySelector(".resizeBtn"); 
 
-allContainerItems.forEach((containerItem) => {
-    containerItem.addEventListener("mouseover", () => {
-        containerItem.setAttribute("style", "background-color: grey");
-    });
+resizeBtn.addEventListener("click", () => {
+    
+    let userInput;
+    
+    do {
+        userInput = Number(prompt("Welche Anzahl für Höhe und Länge? (e.g. 10, 20, 30) ", 16));
+        if(userInput >= 100) {
+            alert("Die Zahl ist zu hoch, bitte wähle eine niedrigere Zahl aus! (unter 100)");
+        }        
+    } while(userInput >= 100);
+
+    clearGrid();
+    createGrid(userInput);
+
 });
-
 
 
